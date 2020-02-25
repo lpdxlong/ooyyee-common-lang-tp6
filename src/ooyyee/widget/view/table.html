@@ -1,0 +1,18 @@
+<table class="layui-hide data-table" id="{$id}" lay-filter="{$id}" table-config="{$config}" data-report="{$report}">
+
+</table>
+{if condition="$toolbar"}
+<div class="layui-hide" id="{$id}_manager" style="display: none;">
+    {volist name="toolbar" id="tool"}
+    <a class="layui-btn layui-btn-xs {$tool._class}" lay-event="{$tool.event}" >{$tool.name}</a>
+    {/volist}
+</div>
+{/if}
+{present name="values"}
+{foreach $values as $key=>$vo }
+<div class="layui-hide" id="{$key}-templet-values">
+    {:json_encode($vo)}
+</div>
+{/foreach}
+{/present}
+

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>邮件</title>
+</head>
+<body>
+	<p>时间:{$data.time}</p>
+	<p>code:{$data.code}<p>
+	<p>file:{$data.file}</p>
+	<p>line:{$data.line}</p>
+	<p>message:{$data.message}</p>
+	<p>trace:{$data.trace}</p>
+	<p>params:{:json_encode($params)}</p>
+	<p>req->param:{$data.param|default=""}</p>
+	<p>req->post:{$data.post|default=""}</p>
+	<p>session:{$data.session|default=""}</p>
+	<p>url:{$data.url|default=""}</p>
+	<p>ip:{$data.ip|default=""}</p>
+	<p>uid:{$data.uid|default=""}</p>
+	<p>username:{$data.username|default=""}</p>
+	<p>userAgent:{$data.useragent|default=""}</p>
+	<p>server:{$data.useragent|default=""}</p>
+</body>
+</html>

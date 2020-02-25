@@ -1,0 +1,48 @@
+<div class="layui-fluid">
+	<div class="layui-row layui-col-space15">
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					<div class="pull-left">
+						<h5 class="header-title">{$headerTitle}</h5>
+					</div>
+					<div class="pull-right">
+						<a class="layui-btn layui-btn-sm layui-btn-normal" id="add-{$moduleName}">{$addTitle}</a>
+					</div>
+				</div>
+				<div class="layui-card-body">
+					{include file="$search"}
+					{:widget('table',[$setting])}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+	window.TableValues={};
+{notempty name="values"}
+	window.TableValues={$values|raw};
+{/notempty}
+</script>
+
+
+
+
+
+
+
+{notempty name="jsfile"}
+<script>
+	layui.use('{$jsfile}', function(module){
+		
+		var area={};
+		area.width='{$area.width|default="800px"}';
+		area.height='{$area.height|default="600px"}';
+		
+		module.init('{$moduleName|default=""}','{$moduleUrl|default=""}','{$title|default=""}','{$setting.id|default="table"}',area);
+	});
+</script>
+{/notempty}
