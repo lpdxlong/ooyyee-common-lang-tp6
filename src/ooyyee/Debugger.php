@@ -26,9 +26,9 @@ class Debugger
         }
         if ($data != "\r\n" || !empty($data)) {
             if (self::$log) {
-                file_put_contents($logFile, "\r\n" . date('Y-m-d H:i:s') . "---------$name $file_line begin---------" . "\r\n", FILE_APPEND);
-                file_put_contents($logFile, self::log_details($data), FILE_APPEND);
-                file_put_contents($logFile, "\r\n" . date('Y-m-d H:i:s') . "---------$name $file_line end---------" . "\r\n", FILE_APPEND);
+                file_put_contents(app()->getRuntimePath().$logFile, "\r\n" . date('Y-m-d H:i:s') . "---------$name $file_line begin---------" . "\r\n", FILE_APPEND);
+                file_put_contents(app()->getRuntimePath().$logFile, self::log_details($data), FILE_APPEND);
+                file_put_contents(app()->getRuntimePath().$logFile, "\r\n" . date('Y-m-d H:i:s') . "---------$name $file_line end---------" . "\r\n", FILE_APPEND);
 
             }
         }
