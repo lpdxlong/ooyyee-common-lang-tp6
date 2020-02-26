@@ -1,5 +1,8 @@
 <?php
 namespace ooyyee\widget;
+use think\app\Url;
+
+
 /**
  * ajax 获取数据表格部件
  * @author lpdx111
@@ -8,11 +11,6 @@ namespace ooyyee\widget;
 class Table extends Widget
 {
 
-    /**
-     * @param array $data
-     * @return string
-     * @throws \Exception
-     */
     public function render($data)
     {
         $default = array();
@@ -21,11 +19,20 @@ class Table extends Widget
         $default['toolbar']=false;
         $default['report']="";
         $data=array_merge($default,$data);
-    
+
+
+
+        $url=$data['url'];
+
+        if($url instanceof Url){
+            $url=$url->build();
+        }
+
+
         $config=[
             'id'=>$data['id'],
             'elem'=>'#'.$data['id'],
-            'url'=>$data['url'],
+            'url'=>$url,
             'cellMinWidth'=>$data['cellMinWidth'],
             'cols'=>[$data['columns']]
         ];
@@ -77,7 +84,12 @@ class Table extends Widget
             }
         }
 
+
+
         $data['config']=$this->my_json_decode(json_encode($config,JSON_UNESCAPED_UNICODE));
+
+
+
         return $this->renderFile('table', $data);
     }
     private function my_json_decode($str) {
