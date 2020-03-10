@@ -220,9 +220,13 @@ class TableBuilder
      * @param int $count
      * @return \think\response\Json
      */
-    public function result($data, $count = 0):Json
+    public function result($data, $count = 0,$totalRow=false):Json
     {
-        return json(['errcode' => 0, 'data' => $data, 'total' => $count]);
+        $result=['errcode' => 0, 'data' => $data, 'total' => $count];
+        if($totalRow){
+            $result['totalRow']=$totalRow;
+        }
+        return json($result);
     }
 
     public function __toString()

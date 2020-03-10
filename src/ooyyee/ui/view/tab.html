@@ -28,8 +28,12 @@
 				$(this).empty();
 			});
 			layui.view('tab-'+id).render('{$module}.' + id + '/index');
+			sessionStorage.setItem(location.hash,id);
 		});
-		var _default = $('#tab-{$filter} ul li').eq(0).attr('lay-id');
-		element.tabChange('{$filter}', _default);
+		let lastPage=sessionStorage.getItem(location.hash);
+		if(!lastPage){
+			lastPage = $('#tab-{$filter} ul li').eq(0).attr('lay-id');
+		}
+		element.tabChange('{$filter}', lastPage);
 	});
 </script>

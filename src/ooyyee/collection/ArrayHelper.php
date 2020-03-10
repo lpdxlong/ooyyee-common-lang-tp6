@@ -7,6 +7,7 @@
  */
 
 namespace ooyyee\collection;
+use think\Collection;
 use think\db\Query;
 
 class ArrayHelper
@@ -16,11 +17,16 @@ class ArrayHelper
     private $data;
 
     /**
-     * @param array $data
+     * @param array|object $data
      * @return ArrayHelper
      */
-    public static function instance(array $data):ArrayHelper{
+    public static function instance( $data):ArrayHelper{
         $helper= new static();
+
+        if($data instanceof Collection){
+            $data=$data->toArray();
+        }
+
         $helper->data=$data;
         return $helper;
     }
@@ -30,12 +36,12 @@ class ArrayHelper
      * 给字段赋值
      * @param $fromField
      * @param $table
-     * @param array $config
+     * @param string $config
      * @param string $toField
      * @param string $defaultValue
      * @return ArrayWith
      */
-    public function with($fromField,$table,$config=[],$toField='',$defaultValue=''):ArrayWith{
+    public function with($fromField,$table,$config='',$toField='',$defaultValue=''):ArrayWith{
         $this->withs[$fromField]=['toField'=>$toField?:$fromField,'with'=>new ArrayWith($table,$config,$this),'default'=>$defaultValue];
         return   $this->withs[$fromField]['with'];
     }
@@ -83,7 +89,7 @@ class ArrayHelper
         foreach ( $this->withs as $key=> $config ) {
             $values=array_column($this->data,$key);
             if(isset($config['with'])){
-                if($config['with'] instanceof Query){
+                if($config['with'] instanceof ArrayWith){
                     $linkDatas=$config['with']->select($values);
                     $this->withs[$key]['bind']=$linkDatas;
                 }

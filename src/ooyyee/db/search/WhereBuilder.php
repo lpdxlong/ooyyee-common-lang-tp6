@@ -14,6 +14,18 @@ class WhereBuilder
     private $where;
     private $whereProcessors = [];
 
+    public function __construct($search = 'where', $where = [])
+    {
+        if (is_string($search)) {
+            $this->search = json_decode(request()->post($search), true);
+        } else if (is_array($search)) {
+            $this->search = $search;
+        } else if (is_object($search) && $search instanceof Base64Search) {
+            $this->search = $search->decode();
+        }
+        $this->where = new Where($where);
+    }
+
     /**
      * @param string|array|object|null $search
      * @param array $where
@@ -21,16 +33,8 @@ class WhereBuilder
      */
     public static function instance($search = 'where', $where = []):WhereBuilder
     {
-        $builder = new static();
-        if (is_string($search)) {
-            $builder->search = json_decode(request()->request($search), true);
-        } else if (is_array($search)) {
-            $builder->search = $search;
-        } else if (is_object($search) && $search instanceof Base64Search) {
-            $builder->search = $search->decode();
-        }
-        $builder->where = new Where($where);
-        return $builder;
+        return new static($search,$where);
+       
     }
 
     public static function requestGetInstance($where=[]):WhereBuilder{
@@ -55,7 +59,7 @@ class WhereBuilder
         }
 
         return [
-            'eq',
+            '=',
             $cnt == 1 ? $ids[0] : -1
         ];
     }
@@ -72,35 +76,34 @@ class WhereBuilder
 
     /**
      * @param $options
-     * @return Where
+     * @return array
      */
-    public function build($options):Where
+    public function build($options):array
     {
         $buildOptions = [];
         foreach ( $options as $k => $v ) {
             if (is_string($k)) {
                 if (is_string($v)) {
-                    $buildOptions [$k] = [
-                        'eq',
-                        $v];
+                    $buildOptions [$k] = ['eq',$v];
                 } else if (is_array($v)) {
                     $buildOptions [$k] = $v;
                 }
             } else {
-                $buildOptions [$v] = [
-                    'eq',
-                    $v];
+                $buildOptions [$v] = ['eq',$v];
             }
         }
+
         foreach ( $buildOptions as $k => $v ) {
             $type = array_shift($v);
             $processor = $this->getProcessor($type);
             $value = $processor->run($v);
+
+
             if ($value !== false) {
                 $this->where[$k] = $value;
             }
         }
-        return $this->where;
+        return $this->where->parse();
     }
 
     /**

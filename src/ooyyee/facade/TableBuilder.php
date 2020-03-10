@@ -17,7 +17,7 @@ use think\Facade;
  * @method \ooyyee\ui\TableBuilder setting($setting,$type=0) static 配置
  * @method \think\response\View fetch($template) static 模板
  * @method \ooyyee\ui\TableBuilder toolbar($setting,$type=0) static 设置toolbar
- * @method \think\response\Json result($data,$total) static 返回结果
+ * @method \think\response\Json result($data,$total,$totalRow) static 返回结果
  */
 class TableBuilder extends Facade
 {
