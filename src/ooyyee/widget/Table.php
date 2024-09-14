@@ -11,6 +11,11 @@ use think\app\Url;
 class Table extends Widget
 {
 
+    /**
+     * @param array $data
+     * @return string
+     * @throws \Exception
+     */
     public function render($data)
     {
         $default = array();

@@ -48,19 +48,15 @@ abstract class Widget
      */
     protected function renderFile($templateFile = '', $var = [])
     {
-
-
         if (!is_file($templateFile)) {
             // 自动定位模板文件
             $name = str_replace('widget\\', '', get_class($this));
             $filename = empty($templateFile) ? $name : $templateFile;
-            $templateFile = __DIR__ . '/view/' . $filename  .'.html';
+            $templateFile = __DIR__ . '/view/' . $filename . '.' . config('template.view_suffix');
             if (!is_file($templateFile)) {
-                dump('模板不存在' . '[' . $templateFile . ']');
+                dump(lang('_TEMPLATE_NOT_EXIST_') . '[' . $templateFile . ']');
             }
         }
-
-
 
         return View::fetch($templateFile, $var);
 

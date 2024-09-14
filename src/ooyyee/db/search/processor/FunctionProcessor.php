@@ -28,7 +28,7 @@ class FunctionProcessor extends Processor {
 						if (is_array ( $result )) {
 							$buildOptions = $result;
 						} else {
-							$buildOptions = [ '=',$result ];
+							$buildOptions = [ 'eq',$result ];
 						}
 						return $buildOptions;
 					}
@@ -52,7 +52,7 @@ class FunctionProcessor extends Processor {
 						if (is_array ( $result )) {
 							$buildOptions = $result;
 						} else {
-							$buildOptions = [ '=',$result ];
+							$buildOptions = [ 'eq',$result ];
 						}
 						return $buildOptions;
 					}

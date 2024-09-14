@@ -20,25 +20,25 @@ class JWTHelper
         $builder = new Builder();
         $signer = new Sha256();
         $key=new Key(config('jwt.key'));
-        $url='ooyyee.com';
+        $url=config('jwt.url');
         // 设置发行人
         $builder->issuedBy($url);
         // 设置接收人
         $builder->permittedFor($url);
         // 设置id
-        $builder->identifiedBy(config('jwt.id'), true);
+        $builder->identifiedBy(config('jwt.id'), false);
         // 设置生成token的时间
-        $builder->issuedAt(time());
-        // 设置在60秒内该token无法使用
-        $builder->canOnlyBeUsedAfter(time());
+        $dateTime = new \DateTimeImmutable();
+        $builder->issuedAt($dateTime);
+    
         // 设置过期时间
-        $builder->expiresAt(time() + $expires);
+        $builder->expiresAt($dateTime->add(\DateInterval::createFromDateString($expires.' seconds')));
         // 给token设置一个id
         $builder->withClaim('uid', $uid);
 
         // 获取生成的token
         $token = $builder->getToken($signer, $key);
-        return $token->__toString();
+        return $token->toString();
     }
 
     /**
@@ -55,7 +55,7 @@ class JWTHelper
         if ($token->isExpired()) {
             return array('errcode'=>400003,'errmsg'=>'token已过期');
         }
-        $url='ooyyee.com';
+        $url=config('jwt.url');
         $validationData = new ValidationData();
         $validationData->setIssuer($url);
         $validationData->setAudience($url);
