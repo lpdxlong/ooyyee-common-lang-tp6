@@ -107,7 +107,7 @@ class JWTHelper
         } catch (RequiredConstraintsViolated $e) {
             return array('errcode'=>400001,'errmsg'=>$e->getMessage(),''=>$e->violations());
         }
-        return $token->claims()->get('uid');
+        return array('errcode'=>0,'uid'=>$token->claims()->get('uid'));
     }
 }
 
